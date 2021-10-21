@@ -6,6 +6,7 @@ import * as XLSX from "xlsx";
   selector: '[appReadexcel]'
 })
 export class ReadexcelDirective {
+  excelObservable: Observable<any>;
 
   constructor() { }
 
@@ -14,9 +15,12 @@ export class ReadexcelDirective {
     const file = target!.files[0];
     console.log(file);
 
-    const excelObservable = new Observable((subscriber:Subscriber<any>) =>{
+    this.excelObservable = new Observable((subscriber:Subscriber<any>) =>{
       subscriber.next('sdf');
       this.readFile(file, subscriber);
+    });
+    this.excelObservable.subscribe((d)=>{
+      console.log(d);
     })
   }
 
@@ -27,7 +31,16 @@ export class ReadexcelDirective {
     fileReader.onload=(e)=>{
       const bufferArray = e.target.result;
 
-      XLSX.read(bufferArray, {type: 'buffer'})
+      const wb: XLSX.WorkBook = XLSX.read(bufferArray, {type: 'buffer'});
+
+      const wsname:string = wb.SheetNames[0];
+
+      const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+
+      const data = XLSX.utils.sheet_to_json(ws);
+
+      subscriber.next(data);
+      subscriber.complete();
 
     }
   }
