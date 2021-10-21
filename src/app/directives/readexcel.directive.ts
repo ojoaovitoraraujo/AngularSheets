@@ -1,27 +1,31 @@
-import { Directive, HostListener } from '@angular/core';
+import { Directive, EventEmitter, HostListener, Output } from '@angular/core';
 import { Observable, Subscriber } from 'rxjs';
 import * as XLSX from "xlsx";
 
 @Directive({
-  selector: '[appReadexcel]'
+  selector: '[appReadexcel]',
+  exportAs: 'readexcel',
 })
 export class ReadexcelDirective {
   excelObservable: Observable<any>;
+  @Output() eventEmmiter = new EventEmitter();
 
   constructor() { }
 
   @HostListener("change",["$event.target"])
   onChange(target: HTMLInputElement){
     const file = target!.files[0];
-    console.log(file);
 
     this.excelObservable = new Observable((subscriber:Subscriber<any>) =>{
-      subscriber.next('sdf');
       this.readFile(file, subscriber);
     });
     this.excelObservable.subscribe((d)=>{
       console.log(d);
     })
+    this.excelObservable.subscribe((d)=>{
+      this.eventEmmiter.emit();
+    })
+
   }
 
   readFile(file:File, subscriber:Subscriber<any>){

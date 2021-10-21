@@ -1,0 +1,12 @@
+<input class="mt-5 mx-5" type="file" (change)="onFileChange($event)" multiple="false">
+<div class="container">
+  <table class="table table-striped">
+    <tbody>
+      <tr *ngFor="let row of data">
+        <td *ngFor="let cell of row">
+          {{cell}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

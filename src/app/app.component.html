@@ -1,1 +1,8 @@
-<input type="file" appReadexcel />
+<!-- <input type="file" appReadexcel #readexcel="readexcel" (eventEmmiter)="DataFromEventEmitter($event)"/>
+
+<ul *ngFor="let n of readexcel.excelObservable | async">
+  <li>{{ n.item }}</li>
+</ul> -->
+
+
+<app-excelsheet></app-excelsheet>
