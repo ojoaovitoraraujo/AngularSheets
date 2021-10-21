@@ -22,11 +22,8 @@ export class ExcelsheetComponent implements OnInit {
 
     reader.onload = (e: any) => {
       const bstr: string = e.target.result;
-
       const wb: XLSX.WorkBook = XLSX.read(bstr, {type: 'binary'});
-
       const wsname : string = wb.SheetNames[0];
-
       const ws : XLSX.WorkSheet = wb.Sheets[wsname];
 
       console.log(ws);
